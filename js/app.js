@@ -10,7 +10,7 @@ let svgMargins = {
     top: 25,
     right: 25,
     bottom: 25,
-    left: 75
+    left: 25
 }
 
 var chartHeight = bblSVGheight - svgMargins.top - svgMargins.bottom;
@@ -28,13 +28,13 @@ d3.csv("data/data.csv").then(function(data){
     })
 
     let yScale = d3.scaleLinear()
-        .domain([d3.min(data, d => data.healthcare) * .5,
-             d3.max(data, d => data.healthcare) * 1.5])
+        .domain([d3.min(data, data => data.healthcare) * .5,
+             d3.max(data, data => data.healthcare) * 1.5])
         .range([chartHeight, 0]);
     
     let xScale = d3.scaleLinear()
-        .domain([d3.min(data , d => data.poverty) * .5, 
-            d3.max(data, d => data.poverty)  * 1.5])
+        .domain([d3.min(data , data => data.poverty) * .5, 
+            d3.max(data, data => data.poverty)  * 1.5])
         .range([0, chartWidth])
     
     let yAxis = d3.axisLeft(yScale)
