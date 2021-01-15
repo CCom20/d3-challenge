@@ -1,4 +1,4 @@
-let bblSVGwidth = 750; 
+let bblSVGwidth = 850; 
 let bblSVGheight = 500; 
 
 let svg = d3.select("#scatter")
@@ -25,11 +25,13 @@ d3.csv("data/data.csv").then(function(data){
     data.forEach(function(data){
         data.poverty = +data.poverty;
         data.healthcare = +data.healthcare;
-    })
+    }); 
+
+    poverty = data.map(item => item.poverty); 
+    healthcare = data.map(item => item.healthcare); 
 
     let yScale = d3.scaleLinear()
-        .domain([d3.min(data, data => data.healthcare) * .5,
-             d3.max(data, data => data.healthcare) * 1.5])
+        .domain([0, d3.max(data, data => data.healthcare)])
         .range([chartHeight, 0]);
     
     let xScale = d3.scaleLinear()
@@ -41,18 +43,22 @@ d3.csv("data/data.csv").then(function(data){
     let xAxis = d3.axisBottom(xScale)
 
     chartGroup.append("g")
-        .attr("transform", `translate(0, ${chartHeight})`)
+        .attr("transform", `translate(${svgMargins.left}, ${chartHeight})`)
         .call(xAxis);
     
     chartGroup.append("g")
+        .attr("transform", `translate(${svgMargins.bottom}, 0)`)
         .call(yAxis)
 
-    chartGroup.selectAll(".bar")
+    let chartCircles = chartGroup.selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
-        .attr("cx", d => xScale(data.poverty))
-        .attr("cy", d => yScale(data.healthcare))
-        .attr("height", d => chartHeight - yScale(d));
+        .attr("cx", xScale(poverty))
+        .attr("cy", yScale(healthcare))
+        .attr("height", d => chartHeight - yScale(d))
+        .attr("r", 20)
+        .attr("fill", "lightblue")
+        .attr("opacity", ".5");
       
 })
