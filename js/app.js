@@ -84,7 +84,7 @@ function respBubbleChart() {
             .attr("fill", "black")
             .attr("text-anchor", "middle"); 
     
-        chartGroup.append("g").selectAll("circle")
+        let circlesGroup = chartGroup.append("g").selectAll("circle")
             .data(data)
             .enter()
             .append("circle")
@@ -94,6 +94,27 @@ function respBubbleChart() {
             .attr("r", 15)
             .attr("fill", "steelblue")
             .attr("opacity", ".5");
+        
+        // Step 1: Initialize Tooltip
+        var toolTip = d3.tip()
+        .attr("class", "tooltip")
+        .offset([20, -90])
+        .html(function(d) {
+            return (`<strong>State:</strong> ${d.abbr}<br /><strong>Poverty:</strong> ${d.poverty}%<br /><strong>Lack Healthcare:</strong> ${d.healthcare}%
+            `);
+        });
+
+        // Step 2: Create the tooltip in chartGroup.
+        chartGroup.call(toolTip);
+
+        // Step 3: Create "mouseover" event listener to display tooltip
+        circlesGroup.on("mouseover", function(d) {
+        toolTip.show(d, this);
+        })
+        // Step 4: Create "mouseout" event listener to hide tooltip
+        .on("mouseout", function(d) {
+            toolTip.hide(d);
+        });
     });
 }
 
