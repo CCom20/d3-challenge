@@ -104,20 +104,20 @@ function respBubbleChart() {
             `);
         });
 
-        // Step 2: Create the tooltip in chartGroup.
+        // Call tooltip.
         chartGroup.call(toolTip);
 
-        // Step 3: Create "mouseover" event listener to display tooltip
+        // Set functions for mouseover and mouseout
         circlesGroup.on("mouseover", function(d) {
         toolTip.show(d, this);
         })
-        // Step 4: Create "mouseout" event listener to hide tooltip
         .on("mouseout", function(d) {
             toolTip.hide(d);
         });
     });
 }
 
+// 
 respBubbleChart();
 
 d3.select(window).on("resize", respBubbleChart);
