@@ -19,10 +19,8 @@ function respBubbleChart() {
             .append("svg")
             .attr("width", bubbleWidth)
             .attr("height", bubbleHeight); 
-    
-        let divWidth = +d3.select("#scatter").style("width").slice(0, -2);
-            console.log(divWidth); 
-    
+
+        // Set the margins for the svg
         let svgMargins = {
             top: 25,
             right: 50,
@@ -30,32 +28,38 @@ function respBubbleChart() {
             left: 50
         }; 
     
+        // Calculate the chart's height and width for display
         var chartHeight = bubbleHeight - svgMargins.top - svgMargins.bottom;
         var chartWidth = bubbleWidth - svgMargins.left - svgMargins.right;
     
+        // Create chart group for translating chart
         let chartGroup = svg.append("g")
         .attr("transform", `translate(${svgMargins.left / 2}, ${svgMargins.top / 2})`); 
     
+        // Parse strings into integer
         data.forEach(function(data){
             data.poverty = +data.poverty;
             data.healthcare = +data.healthcare;
         }); 
     
-        poverty = data.map(item => item.poverty); 
-        healthcare = data.map(item => item.healthcare); 
+        // Map poverty values to variable
+        let poverty = data.map(item => item.poverty); 
+        let healthcare = data.map(item => item.healthcare); 
     
+        // Set yScale
         let yScale = d3.scaleLinear()
             .domain([0, d3.max(data, data => data.healthcare)])
             .range([chartHeight, 0]);
         
+        // Set xScale
         let xScale = d3.scaleLinear()
             .domain([d3.min(data , data => data.poverty) * .7, 
                 d3.max(data, data => data.poverty)])
             .range([0, chartWidth]); 
         
+        // Call x and y scales
         let yAxis = d3.axisLeft(yScale); 
         let xAxis = d3.axisBottom(xScale); 
-    
     
         chartGroup.append("g")
             .attr("transform", `translate(${svgMargins.left}, ${chartHeight})`)
@@ -65,6 +69,7 @@ function respBubbleChart() {
             .attr("transform", `translate(${svgMargins.bottom}, 0)`)
             .call(yAxis); 
         
+        // Append text to chart
         chartGroup.append("text")
             .attr("transform", `translate(${bubbleWidth / 2}, ${chartHeight + svgMargins.top * 2})`)
             .attr("text-anchor", "middle")
@@ -79,6 +84,7 @@ function respBubbleChart() {
             .attr("fill", "black")
             .text("% Lacking Healthcare");
         
+        // Append State Abbreviations to chart
         chartGroup.append("g").selectAll("text")
             .data(data)
             .enter()
@@ -89,6 +95,7 @@ function respBubbleChart() {
             .attr("fill", "black")
             .attr("text-anchor", "middle"); 
     
+        // Append State values / circles to chart
         let circlesGroup = chartGroup.append("g").selectAll("circle")
             .data(data)
             .enter()
@@ -100,7 +107,7 @@ function respBubbleChart() {
             .attr("fill", "steelblue")
             .attr("opacity", ".5");
         
-        // Step 1: Initialize Tooltip
+        // Create tool tip
         var toolTip = d3.tip()
         .attr("class", "tooltip")
         .offset([20, -90])
@@ -122,7 +129,8 @@ function respBubbleChart() {
     });
 }
 
-// 
+// Initialize the chart
 respBubbleChart();
 
+// Call function when window resizes
 d3.select(window).on("resize", respBubbleChart);
