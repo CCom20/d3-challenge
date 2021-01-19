@@ -8,4 +8,4 @@ The code is wrapped in a function so the chart is resized based on window size. 
 
     let divWidth = +d3.select("#scatter").style("width").slice(0, -2); 
 
-There was minimal advantage to this, but I mainly chose to do use the div's width to make sure it always aligns with the text below. Also, I simply wanted to see if I could do it. The rest of the code follows the basics.  
+There was minimal advantage to this, but I mainly chose to do use the div's width to make sure it always aligns with the text below. Also, I simply wanted to see if I could do it. The rest of the code follows the basics.
