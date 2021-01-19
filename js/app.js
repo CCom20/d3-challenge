@@ -1,15 +1,20 @@
+// Set up function to create chart
 function respBubbleChart() {
     d3.csv("../data/data.csv").then(function(data){
 
+        // Select Bubble chart
         let svgBubble = d3.select("#scatter").select("svg");
 
+        // If the Bubble chart is there, clear it (for recreating based on window size)
         if (!svgBubble.empty()) {
             svgBubble.remove();
             }
 
+        // Grab width and height of the chart
         let bubbleWidth = +d3.select("#scatter").style("width").slice(0, -2);
         let bubbleHeight = 500;
     
+        // Set up the SVG
         let svg = d3.select("#scatter")
             .append("svg")
             .attr("width", bubbleWidth)
